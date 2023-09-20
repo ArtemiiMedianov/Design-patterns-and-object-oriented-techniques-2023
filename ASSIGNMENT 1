@@ -1,0 +1,47 @@
+using System;
+
+public class Logger
+{
+    // Step 2: Create a private static instance variable
+    private static Logger _instance;
+
+    // Step 1: Define a private constructor
+    private Logger() { }
+
+    // Step 3: Implement a public static property to access the single instance
+    public static Logger Instance
+    {
+        get
+        {
+            // Check if the instance has not been created yet
+            if (_instance == null)
+            {
+                // If not, create a new instance
+                _instance = new Logger();
+            }
+            return _instance;
+        }
+    }
+
+    // Step 4: Add a public method to log messages
+    public void Log(string message)
+    {
+        // You can replace this line with any logging mechanism you prefer
+        Console.WriteLine($"[Log] {DateTime.Now}: {message}");
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Use the logger from the Singleton instance
+        Logger.Instance.Log("This is a log message.");
+        Logger.Instance.Log("Another log message.");
+
+        // The Logger.Instance is the same instance throughout the application
+        // You can access it from any part of the code to log messages.
+
+        Console.ReadKey();
+    }
+}
