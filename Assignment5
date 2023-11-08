@@ -1,24 +1,48 @@
 using System;
 using System.Collections.Generic;
 
-public interface Display
+public interface IObserver
 {
     void Update(float temperature, float humidity, float pressure);
 }
 
-public class WeatherData
+public interface ISubject
 {
-    private List<Display> observers = new List<Display>();
+    void RegisterObserver(IObserver observer);
+    void RemoveObserver(IObserver observer);
+    void NotifyObservers();
+}
+
+public class WeatherData : ISubject
+{
+    private List<IObserver> observers = new List<IObserver>();
     private float temperature;
     private float humidity;
     private float pressure;
 
-    public void RegisterObserver(Display observer)
+    public float Temperature { get { return temperature; } }
+    public float Humidity { get { return humidity; } }
+    public float Pressure { get { return pressure; } }
+
+    public void SetMeasurements(float temperature, float humidity, float pressure)
+    {
+        this.temperature = temperature;
+        this.humidity = humidity;
+        this.pressure = pressure;
+        MeasurementsChanged();
+    }
+
+    public void MeasurementsChanged()
+    {
+        NotifyObservers();
+    }
+
+    public void RegisterObserver(IObserver observer)
     {
         observers.Add(observer);
     }
 
-    public void RemoveObserver(Display observer)
+    public void RemoveObserver(IObserver observer)
     {
         observers.Remove(observer);
     }
@@ -30,24 +54,19 @@ public class WeatherData
             observer.Update(temperature, humidity, pressure);
         }
     }
+}
 
-    public void SetMeasurements(float temperature, float humidity, float pressure)
+public class Display : IObserver
+{
+    public virtual void Update(float temperature, float humidity, float pressure)
     {
-        this.temperature = temperature;
-        this.humidity = humidity;
-        this.pressure = pressure;
-        MeasurementsChanged();
-    }
-
-    private void MeasurementsChanged()
-    {
-        NotifyObservers();
+        // implementation specific to each display type
     }
 }
 
 public class CurrentConditionsDisplay : Display
 {
-    public void Update(float temperature, float humidity, float pressure)
+    public override void Update(float temperature, float humidity, float pressure)
     {
         Console.WriteLine($"Current conditions: {temperature} degrees and {humidity}% humidity");
     }
@@ -55,7 +74,7 @@ public class CurrentConditionsDisplay : Display
 
 public class StatisticsDisplay : Display
 {
-    public void Update(float temperature, float humidity, float pressure)
+    public override void Update(float temperature, float humidity, float pressure)
     {
         Console.WriteLine($"Avg/Max/Min temperature: {temperature}/{temperature}/{temperature}");
     }
@@ -63,7 +82,7 @@ public class StatisticsDisplay : Display
 
 public class ForecastDisplay : Display
 {
-    public void Update(float temperature, float humidity, float pressure)
+    public override void Update(float temperature, float humidity, float pressure)
     {
         Console.WriteLine("Forecast: Improving weather on the way!");
     }
@@ -83,8 +102,9 @@ class Program
         weatherData.RegisterObserver(statisticsDisplay);
         weatherData.RegisterObserver(forecastDisplay);
 
-        weatherData.SetMeasurements(80, 65, 0);
-        weatherData.SetMeasurements(82, 70, 0);
-        weatherData.SetMeasurements(78, 90, 0);
+        // weather changes simulation
+        weatherData.SetMeasurements(80, 65, 1010);
+        weatherData.SetMeasurements(82, 70, 1005);
+        weatherData.SetMeasurements(78, 90, 1015);
     }
 }
