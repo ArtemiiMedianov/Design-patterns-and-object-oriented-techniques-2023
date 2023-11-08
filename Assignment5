@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
 
-// Observer interface
 public interface Display
 {
     void Update(float temperature, float humidity, float pressure);
 }
 
-// Subject class (Observable)
 public class WeatherData
 {
     private List<Display> observers = new List<Display>();
@@ -47,7 +45,6 @@ public class WeatherData
     }
 }
 
-// Concrete observer classes
 public class CurrentConditionsDisplay : Display
 {
     public void Update(float temperature, float humidity, float pressure)
@@ -86,7 +83,6 @@ class Program
         weatherData.RegisterObserver(statisticsDisplay);
         weatherData.RegisterObserver(forecastDisplay);
 
-        // Simulate weather changes
         weatherData.SetMeasurements(80, 65, 0);
         weatherData.SetMeasurements(82, 70, 0);
         weatherData.SetMeasurements(78, 90, 0);
