@@ -1,0 +1,94 @@
+using System;
+using System.Collections.Generic;
+
+// Observer interface
+public interface Display
+{
+    void Update(float temperature, float humidity, float pressure);
+}
+
+// Subject class (Observable)
+public class WeatherData
+{
+    private List<Display> observers = new List<Display>();
+    private float temperature;
+    private float humidity;
+    private float pressure;
+
+    public void RegisterObserver(Display observer)
+    {
+        observers.Add(observer);
+    }
+
+    public void RemoveObserver(Display observer)
+    {
+        observers.Remove(observer);
+    }
+
+    public void NotifyObservers()
+    {
+        foreach (var observer in observers)
+        {
+            observer.Update(temperature, humidity, pressure);
+        }
+    }
+
+    public void SetMeasurements(float temperature, float humidity, float pressure)
+    {
+        this.temperature = temperature;
+        this.humidity = humidity;
+        this.pressure = pressure;
+        MeasurementsChanged();
+    }
+
+    private void MeasurementsChanged()
+    {
+        NotifyObservers();
+    }
+}
+
+// Concrete observer classes
+public class CurrentConditionsDisplay : Display
+{
+    public void Update(float temperature, float humidity, float pressure)
+    {
+        Console.WriteLine($"Current conditions: {temperature} degrees and {humidity}% humidity");
+    }
+}
+
+public class StatisticsDisplay : Display
+{
+    public void Update(float temperature, float humidity, float pressure)
+    {
+        Console.WriteLine($"Avg/Max/Min temperature: {temperature}/{temperature}/{temperature}");
+    }
+}
+
+public class ForecastDisplay : Display
+{
+    public void Update(float temperature, float humidity, float pressure)
+    {
+        Console.WriteLine("Forecast: Improving weather on the way!");
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        WeatherData weatherData = new WeatherData();
+
+        CurrentConditionsDisplay currentConditionsDisplay = new CurrentConditionsDisplay();
+        StatisticsDisplay statisticsDisplay = new StatisticsDisplay();
+        ForecastDisplay forecastDisplay = new ForecastDisplay();
+
+        weatherData.RegisterObserver(currentConditionsDisplay);
+        weatherData.RegisterObserver(statisticsDisplay);
+        weatherData.RegisterObserver(forecastDisplay);
+
+        // Simulate weather changes
+        weatherData.SetMeasurements(80, 65, 0);
+        weatherData.SetMeasurements(82, 70, 0);
+        weatherData.SetMeasurements(78, 90, 0);
+    }
+}
