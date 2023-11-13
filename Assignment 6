@@ -1,0 +1,117 @@
+using System;
+using System.Collections.Generic;
+
+interface Flying
+{
+    void Fly();
+}
+
+interface Swimming
+{
+    void Swim();
+}
+
+class CanFly : Flying
+{
+    public void Fly()
+    {
+        Console.WriteLine("*FLIES BY FLAPPING WINGS*");
+    }
+}
+
+class CannotFly : Flying
+{
+    public void Fly()
+    {
+        Console.WriteLine("*HIDES HEAD IN THE SAND AS IT CANNOT FLY*");
+    }
+}
+
+class Bird
+{
+    public string Name { get; set; }
+    public string Color { get; set; }
+    public double BeakLength { get; set; }
+    protected Flying flying;
+
+    public Bird(string name, string color, double beakLength, Flying flying)
+    {
+        Name = name;
+        Color = color;
+        BeakLength = beakLength;
+        this.flying = flying;
+    }
+    public void Display()
+    {
+        Console.WriteLine($"Here is the {Name}'s movement behavior: ");
+        flying.Fly();
+    }
+}
+
+class Duck : Bird, Swimming
+{
+    public string ColorPalette { get; set; }
+    public Duck(string name, string color, double beakLength, string colorPalette)
+        : base(name, color, beakLength, new CanFly())
+    {
+        ColorPalette = colorPalette;
+    }
+    public void Swim()
+    {
+        Console.WriteLine("*SWIMS IN WATER*");
+    }
+}
+
+class Eagle : Bird
+{
+    public int TopSpeed { get; set; }
+    public int VisionRange { get; set; }
+    public Eagle(string name, string color, double beakLength, int topSpeed, int visionRange)
+        : base(name, color, beakLength, new CanFly())
+    {
+        TopSpeed = topSpeed;
+        VisionRange = visionRange;
+    }
+}
+
+class Ostrich : Bird
+{
+    public Ostrich(string name, string color, double beakLength)
+        : base(name, color, beakLength, new CannotFly())
+    {
+    }
+}
+
+class RubberDuck : Duck
+{
+    public RubberDuck(string name, string color, double beakLength, string colorPalette)
+        : base(name, color, beakLength, new CannotFly())
+    {
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        List<Bird> birds = new List<Bird>
+        {
+            new Duck("Mallard Duck", "Brown", 5.0, "Green"),
+            new Eagle("Bald Eagle", "White", 7.0, 100, 200),
+            new Ostrich("Ostrich", "Brown", 8.0),
+            new RubberDuck("Yellow Rubber Duck", "Yellow", 2.0, "Yellow"),
+            new Duck("Emperor Penguin", "Black and White", 4.0, "Black")
+        };
+        Console.WriteLine($"Number of birds in the simulation: {birds.Count}");
+        foreach (var bird in birds)
+        {
+            bird.Display();
+            if (bird is Swimming swimmingBird)
+            {
+                swimmingBird.Swim();
+            }
+
+            Console.WriteLine();
+        }
+    }
+}
