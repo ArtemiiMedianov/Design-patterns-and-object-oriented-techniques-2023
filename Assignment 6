@@ -1,17 +1,12 @@
 using System;
 using System.Collections.Generic;
 
-interface Flying
+interface IFlyBehavior
 {
     void Fly();
 }
 
-interface Swimming
-{
-    void Swim();
-}
-
-class CanFly : Flying
+class FlapWingsFly : IFlyBehavior
 {
     public void Fly()
     {
@@ -19,7 +14,7 @@ class CanFly : Flying
     }
 }
 
-class CannotFly : Flying
+class NoFly : IFlyBehavior
 {
     public void Fly()
     {
@@ -32,27 +27,27 @@ class Bird
     public string Name { get; set; }
     public string Color { get; set; }
     public double BeakLength { get; set; }
-    protected Flying flying;
+    protected IFlyBehavior flyBehavior;
 
-    public Bird(string name, string color, double beakLength, Flying flying)
+    public Bird(string name, string color, double beakLength, IFlyBehavior flyBehavior)
     {
         Name = name;
         Color = color;
         BeakLength = beakLength;
-        this.flying = flying;
+        this.flyBehavior = flyBehavior;
     }
     public void Display()
     {
         Console.WriteLine($"Here is the {Name}'s movement behavior: ");
-        flying.Fly();
+        flyBehavior.Fly();
     }
 }
 
 class Duck : Bird, Swimming
 {
     public string ColorPalette { get; set; }
-    public Duck(string name, string color, double beakLength, string colorPalette)
-        : base(name, color, beakLength, new CanFly())
+    public Duck(string name, string color, double beakLength, string colorPalette, IFlyBehavior flyBehavior)
+        : base(name, color, beakLength, flyBehavior)
     {
         ColorPalette = colorPalette;
     }
@@ -66,8 +61,8 @@ class Eagle : Bird
 {
     public int TopSpeed { get; set; }
     public int VisionRange { get; set; }
-    public Eagle(string name, string color, double beakLength, int topSpeed, int visionRange)
-        : base(name, color, beakLength, new CanFly())
+    public Eagle(string name, string color, double beakLength, int topSpeed, int visionRange, IFlyBehavior flyBehavior)
+        : base(name, color, beakLength, flyBehavior)
     {
         TopSpeed = topSpeed;
         VisionRange = visionRange;
@@ -77,7 +72,7 @@ class Eagle : Bird
 class Ostrich : Bird
 {
     public Ostrich(string name, string color, double beakLength)
-        : base(name, color, beakLength, new CannotFly())
+        : base(name, color, beakLength, new NoFly())
     {
     }
 }
@@ -85,7 +80,7 @@ class Ostrich : Bird
 class RubberDuck : Duck
 {
     public RubberDuck(string name, string color, double beakLength, string colorPalette)
-        : base(name, color, beakLength, new CannotFly())
+        : base(name, color, beakLength, colorPalette, new NoFly())
     {
     }
 }
@@ -96,11 +91,11 @@ class Program
     {
         List<Bird> birds = new List<Bird>
         {
-            new Duck("Mallard Duck", "Brown", 5.0, "Green"),
-            new Eagle("Bald Eagle", "White", 7.0, 100, 200),
+            new Duck("Mallard Duck", "Brown", 5.0, "Green", new FlapWingsFly()),
+            new Eagle("Bald Eagle", "White", 7.0, 100, 200, new FlapWingsFly()),
             new Ostrich("Ostrich", "Brown", 8.0),
             new RubberDuck("Yellow Rubber Duck", "Yellow", 2.0, "Yellow"),
-            new Duck("Emperor Penguin", "Black and White", 4.0, "Black")
+            new Duck("Emperor Penguin", "Black and White", 4.0, "Black", new NoFly())
         };
         Console.WriteLine($"Number of birds in the simulation: {birds.Count}");
         foreach (var bird in birds)
@@ -110,7 +105,6 @@ class Program
             {
                 swimmingBird.Swim();
             }
-
             Console.WriteLine();
         }
     }
