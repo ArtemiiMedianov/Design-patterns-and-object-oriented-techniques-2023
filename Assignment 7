@@ -1,0 +1,204 @@
+using System;
+using System.Collections.Generic;
+
+// command interface
+interface ICommand
+{
+    void Execute();
+}
+
+// composite command
+class CompositeCommand : ICommand
+{
+    private List<ICommand> commands = new List<ICommand>();
+    public void AddCommand(ICommand command)
+    {
+        commands.Add(command);
+    }
+    public void Execute()
+    {
+        foreach (var command in commands)
+        {
+            command.Execute();
+        }
+    }
+}
+
+// concrete command to turn the light on
+class LightOnCommand : ICommand
+{
+    private Light light;
+
+    public LightOnCommand(Light light)
+    {
+        this.light = light;
+    }
+    public void Execute()
+    {
+        light.TurnOn();
+    }
+}
+// concrete command to turn light off
+class LightOffCommand : ICommand
+{
+    private Light light;
+
+    public LightOffCommand(Light light)
+    {
+        this.light = light;
+    }
+    public void Execute()
+    {
+        light.TurnOff();
+    }
+}
+
+// concrete command to increase thermostat temperature
+class ThermostatIncreaseCommand : ICommand
+{
+    private Thermostat thermostat;
+
+    public ThermostatIncreaseCommand(Thermostat thermostat)
+    {
+        this.thermostat = thermostat;
+    }
+    public void Execute()
+    {
+        thermostat.IncreaseTemperature();
+    }
+}
+// concrete command to decrease thermostat temperature
+class ThermostatDecreaseCommand : ICommand
+{
+    private Thermostat thermostat;
+
+    public ThermostatDecreaseCommand(Thermostat thermostat)
+    {
+        this.thermostat = thermostat;
+    }
+
+    public void Execute()
+    {
+        thermostat.DecreaseTemperature();
+    }
+}
+
+// receiver for Light
+class Light
+{
+    private bool isOn = false;
+
+    public void TurnOn()
+    {
+        isOn = true;
+        Console.WriteLine("Light is ON");
+    }
+    public void TurnOff()
+    {
+        isOn = false;
+        Console.WriteLine("Light is OFF");
+    }
+}
+
+// receiver for thermostat
+class Thermostat
+{
+    private int temperature = 20;
+
+    public void IncreaseTemperature()
+    {
+        temperature++;
+        Console.WriteLine($"thermostat temperature increased to {temperature}");
+    }
+    public void DecreaseTemperature()
+    {
+        temperature--;
+        Console.WriteLine($"thermostat temperature decreased to {temperature}");
+    }
+}
+
+// invoker
+class RemoteController
+{
+    private List<ICommand> commands = new List<ICommand>();
+
+    public void SetCommand(ICommand command)
+    {
+        commands.Add(command);
+    }
+    public void PressButton()
+    {
+        foreach (var command in commands)
+        {
+            command.Execute();
+        }
+
+        commands.Clear();
+    }
+}
+
+// client
+class Program
+{
+    static void Main()
+    {
+        Light livingRoomLight = new Light();
+        Thermostat livingRoomThermostat = new Thermostat();
+        RemoteController remote = new RemoteController();
+
+        // instructions
+        Console.WriteLine("press 1 to turn light on");
+        Console.WriteLine("press 2 to turn light off");
+        Console.WriteLine("press 3 to increase thermostat temperature");
+        Console.WriteLine("press 4 to decrease thermostat temperature");
+        Console.WriteLine("press 5 to turn all devices off");
+
+        while (true)
+        {
+            // user input
+            string input = Console.ReadLine();
+
+            // handle invalid inputs
+            if (!int.TryParse(input, out int commandNumber) || commandNumber < 1 || commandNumber > 5)
+            {
+                Console.WriteLine("invalid input. please enter a valid command number (1-5)");
+                continue;
+            }
+
+            // execute the corresponding command
+            switch (commandNumber)
+            {
+                case 1:
+                    remote.SetCommand(new LightOnCommand(livingRoomLight));
+                    Console.WriteLine("light turned on");
+                    break;
+                case 2:
+                    remote.SetCommand(new LightOffCommand(livingRoomLight));
+                    Console.WriteLine("light turned off");
+                    break;
+                case 3:
+                    remote.SetCommand(new ThermostatIncreaseCommand(livingRoomThermostat));
+                    Console.WriteLine("temperature increased");
+                    break;
+                case 4:
+                    remote.SetCommand(new ThermostatDecreaseCommand(livingRoomThermostat));
+                    Console.WriteLine("temperature decreased");
+                    break;
+                case 5:
+                    // composite command to turn all devices off
+                    CompositeCommand allDevicesOff = new CompositeCommand();
+                    allDevicesOff.AddCommand(new LightOffCommand(livingRoomLight));
+                    allDevicesOff.AddCommand(new ThermostatDecreaseCommand(livingRoomThermostat));
+                    remote.SetCommand(allDevicesOff);
+                    Console.WriteLine("all devices turned off");
+                    break;
+                default:
+                    Console.WriteLine("invalid input. please enter a valid command number (1-5)");
+                    break;
+            }
+
+            // press the button to execute the command
+            remote.PressButton();
+        }
+    }
+}
