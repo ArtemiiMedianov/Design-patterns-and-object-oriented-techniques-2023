@@ -1,0 +1,187 @@
+using System;
+using System.Collections;
+
+// MenuItem class representing a menu item
+public class MenuItem
+{
+    public string Name { get; }
+    public string Description { get; }
+    public bool Vegetarian { get; }
+    public double Price { get; }
+
+    public MenuItem(string name, string description, bool vegetarian, double price)
+    {
+        Name = name;
+        Description = description;
+        Vegetarian = vegetarian;
+        Price = price;
+    }
+}
+
+// Iterator interface
+public interface Iterator
+{
+    bool HasNext();
+    MenuItem Next();
+}
+
+// Menu interface
+public interface Menu
+{
+    Iterator CreateIterator();
+}
+
+// PancakeHouseMenu class implementing Menu
+public class PancakeHouseMenu : Menu
+{
+    private ArrayList menuItems;
+
+    public PancakeHouseMenu()
+    {
+        menuItems = new ArrayList();
+
+        AddItem("K&B's Pancake Breakfast", "Pancakes with scrambled eggs, and toast", true, 2.99);
+        AddItem("Regular Pancake Breakfast", "Pancakes with fried eggs, sausage", false, 2.99);
+        AddItem("Blueberry Pancakes", "Pancakes made with fresh blueberries", true, 3.49);
+        AddItem("Waffles", "Waffles, with your choice of blueberries or strawberries", true, 3.59);
+    }
+
+    public void AddItem(string name, string description, bool vegetarian, double price)
+    {
+        MenuItem menuItem = new MenuItem(name, description, vegetarian, price);
+        menuItems.Add(menuItem);
+    }
+
+    public Iterator CreateIterator()
+    {
+        return new PancakeHouseMenuIterator(menuItems);
+    }
+}
+
+// DinerMenu class implementing Menu
+public class DinerMenu : Menu
+{
+    private const int MAX_ITEMS = 6;
+    private int numberOfItems = 0;
+    private MenuItem[] menuItems;
+
+    public DinerMenu()
+    {
+        menuItems = new MenuItem[MAX_ITEMS];
+
+        AddItem("Vegetarian BLT", "(Fakin') Bacon with lettuce & tomato on whole wheat", true, 2.99);
+        AddItem("BLT", "Bacon with lettuce & tomato on whole wheat", false, 2.99);
+        AddItem("Soup of the day", "Soup of the day, with a side of potato salad", false, 3.29);
+        AddItem("Hotdog", "A hot dog, with saurkraut, relish, onions, topped with cheese", false, 3.05);
+        AddItem("Steamed Veggies and Brown Rice", "Steamed vegetables over brown rice", true, 3.99);
+        AddItem("Pasta", "Spaghetti with Marinara Sauce, and a slice of sourdough bread", true, 3.89);
+    }
+
+    public void AddItem(string name, string description, bool vegetarian, double price)
+    {
+        MenuItem menuItem = new MenuItem(name, description, vegetarian, price);
+        if (numberOfItems < MAX_ITEMS)
+        {
+            menuItems[numberOfItems] = menuItem;
+            numberOfItems++;
+        }
+    }
+
+    public Iterator CreateIterator()
+    {
+        return new DinerMenuIterator(menuItems);
+    }
+}
+
+// PancakeHouseMenuIterator class implementing Iterator
+public class PancakeHouseMenuIterator : Iterator
+{
+    private ArrayList items;
+    private int position = 0;
+
+    public PancakeHouseMenuIterator(ArrayList items)
+    {
+        this.items = items;
+    }
+
+    public bool HasNext()
+    {
+        return position < items.Count;
+    }
+
+    public MenuItem Next()
+    {
+        MenuItem menuItem = (MenuItem)items[position];
+        position++;
+        return menuItem;
+    }
+}
+
+// DinerMenuIterator class implementing Iterator
+public class DinerMenuIterator : Iterator
+{
+    private MenuItem[] items;
+    private int position = 0;
+
+    public DinerMenuIterator(MenuItem[] items)
+    {
+        this.items = items;
+    }
+
+    public bool HasNext()
+    {
+        return position < items.Length && items[position] != null;
+    }
+
+    public MenuItem Next()
+    {
+        MenuItem menuItem = items[position];
+        position++;
+        return menuItem;
+    }
+}
+
+// Waitress class
+public class Waitress
+{
+    private Menu pancakeHouseMenu;
+    private Menu dinerMenu;
+
+    public Waitress(Menu pancakeHouseMenu, Menu dinerMenu)
+    {
+        this.pancakeHouseMenu = pancakeHouseMenu;
+        this.dinerMenu = dinerMenu;
+    }
+
+    public void PrintMenu()
+    {
+        Console.WriteLine("MENU");
+        Console.WriteLine("----");
+        Console.WriteLine("BREAKFAST");
+        PrintMenu(pancakeHouseMenu.CreateIterator());
+
+        Console.WriteLine("\nLUNCH");
+        PrintMenu(dinerMenu.CreateIterator());
+    }
+
+    private void PrintMenu(Iterator iterator)
+    {
+        while (iterator.HasNext())
+        {
+            MenuItem menuItem = iterator.Next();
+            Console.WriteLine($"{menuItem.Name}, {menuItem.Price} -- {menuItem.Description}");
+        }
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Menu pancakeHouseMenu = new PancakeHouseMenu();
+        Menu dinerMenu = new DinerMenu();
+
+        Waitress waitress = new Waitress(pancakeHouseMenu, dinerMenu);
+        waitress.PrintMenu();
+    }
+}
