@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 
-// MenuItem class representing a menu item
+// menu item
 public class MenuItem
 {
     public string Name { get; }
@@ -18,20 +18,20 @@ public class MenuItem
     }
 }
 
-// Iterator interface
+// iterator
 public interface Iterator
 {
     bool HasNext();
     MenuItem Next();
 }
 
-// Menu interface
+// menu
 public interface Menu
 {
     Iterator CreateIterator();
 }
 
-// PancakeHouseMenu class implementing Menu
+// pancakehouse menu
 public class PancakeHouseMenu : Menu
 {
     private ArrayList menuItems;
@@ -58,7 +58,7 @@ public class PancakeHouseMenu : Menu
     }
 }
 
-// DinerMenu class implementing Menu
+// diner menu
 public class DinerMenu : Menu
 {
     private const int MAX_ITEMS = 6;
@@ -93,7 +93,7 @@ public class DinerMenu : Menu
     }
 }
 
-// PancakeHouseMenuIterator class implementing Iterator
+// pancakehouse menu iterator
 public class PancakeHouseMenuIterator : Iterator
 {
     private ArrayList items;
@@ -117,7 +117,7 @@ public class PancakeHouseMenuIterator : Iterator
     }
 }
 
-// DinerMenuIterator class implementing Iterator
+// diner menu iterator
 public class DinerMenuIterator : Iterator
 {
     private MenuItem[] items;
@@ -141,7 +141,7 @@ public class DinerMenuIterator : Iterator
     }
 }
 
-// Waitress class
+// waitress
 public class Waitress
 {
     private Menu pancakeHouseMenu;
