@@ -3,14 +3,14 @@ using BuilderAssignment.Models;
 namespace BuilderAssignment.Builders
 {
     /// <summary>
-    /// Concrete builder for Miso Ramen
+    /// Concrete builder for Shoyu Ramen
     /// </summary>
-    public class MisoRamenBuilder : IRamenBuilder
+    public class ShoyuRamenBuilder : IRamenBuilder
     {
         private RamenBowl ramen;
-        public MisoRamenBuilder()
+        public ShoyuRamenBuilder()
         {
-            this.ramen = new RamenBowl("Miso Ramen");
+            this.ramen = new RamenBowl("Shoyu Ramen");
         }
         public void SetBroth(string broth)
         {
