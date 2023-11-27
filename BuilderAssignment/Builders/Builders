@@ -4,38 +4,6 @@ using BuilderAssignment.Enums;
 namespace BuilderAssignment.Builders
 {
     /// <summary>
-    /// Concrete builder for Shoyu Ramen
-    /// </summary>
-    public class ShoyuRamenBuilder : IRamenBuilder
-    {
-        private RamenBowl ramen;
-        public ShoyuRamenBuilder()
-        {
-            this.ramen = new RamenBowl("Shoyu Ramen");
-        }
-        public void SetBroth(string broth)
-        {
-            this.ramen.Broth = broth;
-        }
-        public void SetNoodles(string noodles)
-        {
-            this.ramen.Noodles = noodles;
-        }
-        public void AddToppings(string[] toppings)
-        {
-            this.ramen.Toppings.AddRange(toppings);
-        }
-        public void AddExtras(string[] extras)
-        {
-            this.ramen.Extras.AddRange(extras);
-        }
-        public RamenBowl GetRamen()
-        {
-            return this.ramen;
-        }
-    }
-
-    /// <summary>
     /// Concrete builder for Miso Ramen
     /// </summary>
     public class MisoRamenBuilder : IRamenBuilder
@@ -45,21 +13,21 @@ namespace BuilderAssignment.Builders
         {
             this.ramen = new RamenBowl("Miso Ramen");
         }
-        public void SetBroth(string broth)
+        public void SetBroth()
         {
-            this.ramen.Broth = broth;
+            this.ramen.Broth = IngredientEnums.Broth.Miso.ToString();
         }
-        public void SetNoodles(string noodles)
+        public void SetNoodles()
         {
-            this.ramen.Noodles = noodles;
+            this.ramen.Noodles = IngredientEnums.Noodles.Udon.ToString();
         }
-        public void AddToppings(string[] toppings)
+        public void AddToppings()
         {
-            this.ramen.Toppings.AddRange(toppings);
+            this.ramen.Toppings.AddRange(new string[] { IngredientEnums.Toppings.GreenOnions.ToString() });
         }
-        public void AddExtras(string[] extras)
+        public void AddExtras()
         {
-            this.ramen.Extras.AddRange(extras);
+            this.ramen.Extras.AddRange(new string[] { IngredientEnums.Extras.Corn.ToString() });
         }
         public RamenBowl GetRamen()
         {
@@ -77,21 +45,21 @@ namespace BuilderAssignment.Builders
         {
             this.ramen = new RamenBowl("Spicy Ramen");
         }
-        public void SetBroth(string broth)
+        public void SetBroth()
         {
-            this.ramen.Broth = broth;
+            this.ramen.Broth = IngredientEnums.Broth.SpicyTonkotsu.ToString();
         }
-        public void SetNoodles(string noodles)
+        public void SetNoodles()
         {
-            this.ramen.Noodles = noodles;
+            this.ramen.Noodles = IngredientEnums.Noodles.Thin.ToString();
         }
-        public void AddToppings(string[] toppings)
+        public void AddToppings()
         {
-            this.ramen.Toppings.AddRange(toppings);
+            this.ramen.Toppings.AddRange(new string[] { IngredientEnums.Toppings.GashuPork.ToString(), IngredientEnums.Toppings.GreenOnions.ToString() });
         }
-        public void AddExtras(string[] extras)
+        public void AddExtras()
         {
-            this.ramen.Extras.AddRange(extras);
+            this.ramen.Extras.AddRange(new string[] { IngredientEnums.Extras.ExtraSpice.ToString() });
         }
         public RamenBowl GetRamen()
         {
@@ -109,21 +77,21 @@ namespace BuilderAssignment.Builders
         {
             this.ramen = new RamenBowl("Vegan Ramen");
         }
-        public void SetBroth(string broth)
+        public void SetBroth()
         {
-            this.ramen.Broth = broth;
+            this.ramen.Broth = IngredientEnums.Broth.Vegan.ToString();
         }
-        public void SetNoodles(string noodles)
+        public void SetNoodles()
         {
-            this.ramen.Noodles = noodles;
+            this.ramen.Noodles = IngredientEnums.Noodles.Soba.ToString();
         }
-        public void AddToppings(string[] toppings)
+        public void AddToppings()
         {
-            this.ramen.Toppings.AddRange(toppings);
+            this.ramen.Toppings.AddRange(new string[] { IngredientEnums.Toppings.BamboShoots.ToString(), IngredientEnums.Toppings.Seaweed.ToString() });
         }
-        public void AddExtras(string[] extras)
+        public void AddExtras()
         {
-            this.ramen.Extras.AddRange(extras);
+            // No extras for Vegan Ramen
         }
         public RamenBowl GetRamen()
         {
