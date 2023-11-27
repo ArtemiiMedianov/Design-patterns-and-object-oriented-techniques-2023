@@ -1,29 +1,24 @@
-using System;
-
 namespace DesignPatterns
 {
-    // Class for Printer
     // TODO#1: Convert to use Singleton pattern
     public class Printer
     {
-        private static Printer instance;
-
+        private static Printer _instance;
         private Printer() { }
-
         public static Printer Instance
         {
             get
             {
-                if (instance == null)
+                if (_instance == null)
                 {
-                    instance = new Printer();
+                    _instance = new Printer();
                 }
-                return instance;
+                return _instance;
             }
         }
-
         public void Print(string message)
         {
+            // Output: print out the string message 
             Console.WriteLine(message);
         }
     }
@@ -37,41 +32,24 @@ namespace DesignPatterns
         void Evaluate();
         void PublishResults();
     }
-
-    // Class template for Exam classes
-    public class ExamFactory
-    {
-        public static IExam CreateMathExam()
-        {
-            return new MathExam();
-        }
-
-        public static IExam CreateScienceExam()
-        {
-            return new ScienceExam();
-        }
-
-        public static IExam CreateProgrammingExam()
-        {
-            return new ProgrammingExam();
-        }
-    }
-
     public class MathExam : IExam
     {
         public void Conduct()
         {
-            Printer.Instance.Print("Conducting Math Exam"); // Output: "Conducting Math Exam", should use Printer class to print the message
+            // Output: "Conducting Math Exam", should use Printer class to print the message
+            Printer.Instance.Print("Conducting Math Exam");
         }
 
         public void Evaluate()
         {
-            Printer.Instance.Print("Evaluating Math Exam"); // Output: "Evaluating Math Exam", should use Printer class to print the message
+            // Output: "Evaluating Math Exam", should use Printer class to print the message
+            Printer.Instance.Print("Evaluating Math Exam");
         }
 
         public void PublishResults()
         {
-            Printer.Instance.Print("Publishing Math Exam Results"); // Output: "Publishing Math Exam Results", should use Printer class to print the message
+            // Output: "Publishing Math Exam Results", should use Printer class to print the message
+            Printer.Instance.Print("Publishing Math Exam Results");
         }
     }
 
@@ -119,32 +97,21 @@ namespace DesignPatterns
         static void Main(string[] args)
         {
             // TODO#7: Initialize Printer that uses Singleton pattern
-            var printer = Printer.Instance;
-
+            Printer printer = Printer.Instance;
             // TODO#8: Test that the created Printer works, by calling the Print method
             printer.Print("Testing Printer");
-
             // TODO#9: Ensure that only one Printer instance is used throughout the application.
-            // Try to create a new Printer object
-            var anotherPrinter = Printer.Instance;
-            Console.WriteLine("Are both Printer instances the same? " + (printer == anotherPrinter));
-
+            // Try to create a new Printer object and compare the two objects to check,
+            // that the new printer object is the same instance
+            Printer anotherPrinter = Printer.Instance;
+            Console.WriteLine("are both printer instances the same " + (printer == anotherPrinter));
             // TODO#10: Use Abstract Factory to create different types of exams.
             IExam mathExam = new MathExam();
             IExam scienceExam = new ScienceExam();
             IExam programmingExam = new ProgrammingExam();
-
             mathExam.Conduct();
-            mathExam.Evaluate();
-            mathExam.PublishResults();
-
             scienceExam.Conduct();
-            scienceExam.Evaluate();
-            scienceExam.PublishResults();
-
             programmingExam.Conduct();
-            programmingExam.Evaluate();
-            programmingExam.PublishResults();
         }
     }
 }
