@@ -1,4 +1,5 @@
 using BuilderAssignment.Models;
+using BuilderAssignment.Enums;
 
 namespace BuilderAssignment.Builders
 {
@@ -35,14 +36,14 @@ namespace BuilderAssignment.Builders
     }
 
     /// <summary>
-    /// Concrete builder for Tonkotsu Ramen
+    /// Concrete builder for Miso Ramen
     /// </summary>
-    public class TonkotsuRamenBuilder : IRamenBuilder
+    public class MisoRamenBuilder : IRamenBuilder
     {
         private RamenBowl ramen;
-        public TonkotsuRamenBuilder()
+        public MisoRamenBuilder()
         {
-            this.ramen = new RamenBowl("Tonkotsu Ramen");
+            this.ramen = new RamenBowl("Miso Ramen");
         }
         public void SetBroth(string broth)
         {
@@ -67,14 +68,46 @@ namespace BuilderAssignment.Builders
     }
 
     /// <summary>
-    /// Concrete builder for Miso Ramen
+    /// Concrete builder for Spicy Ramen
     /// </summary>
-    public class MisoRamenBuilder : IRamenBuilder
+    public class SpicyRamenBuilder : IRamenBuilder
     {
         private RamenBowl ramen;
-        public MisoRamenBuilder()
+        public SpicyRamenBuilder()
         {
-            this.ramen = new RamenBowl("Miso Ramen");
+            this.ramen = new RamenBowl("Spicy Ramen");
+        }
+        public void SetBroth(string broth)
+        {
+            this.ramen.Broth = broth;
+        }
+        public void SetNoodles(string noodles)
+        {
+            this.ramen.Noodles = noodles;
+        }
+        public void AddToppings(string[] toppings)
+        {
+            this.ramen.Toppings.AddRange(toppings);
+        }
+        public void AddExtras(string[] extras)
+        {
+            this.ramen.Extras.AddRange(extras);
+        }
+        public RamenBowl GetRamen()
+        {
+            return this.ramen;
+        }
+    }
+
+    /// <summary>
+    /// Concrete builder for Vegan Ramen
+    /// </summary>
+    public class VeganRamenBuilder : IRamenBuilder
+    {
+        private RamenBowl ramen;
+        public VeganRamenBuilder()
+        {
+            this.ramen = new RamenBowl("Vegan Ramen");
         }
         public void SetBroth(string broth)
         {
