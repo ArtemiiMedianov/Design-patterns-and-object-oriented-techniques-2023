@@ -1,0 +1,100 @@
+using BuilderAssignment.Models;
+
+namespace BuilderAssignment.Builders
+{
+    /// <summary>
+    /// Concrete builder for Miso Ramen
+    /// </summary>
+    public class MisoRamenBuilder : IRamenBuilder
+    {
+        private RamenBowl ramen;
+        public MisoRamenBuilder()
+        {
+            this.ramen = new RamenBowl("Miso Ramen");
+        }
+        public void SetBroth(string broth)
+        {
+            this.ramen.Broth = broth;
+        }
+        public void SetNoodles(string noodles)
+        {
+            this.ramen.Noodles = noodles;
+        }
+        public void AddToppings(string[] toppings)
+        {
+            this.ramen.Toppings.AddRange(toppings);
+        }
+        public void AddExtras(string[] extras)
+        {
+            this.ramen.Extras.AddRange(extras);
+        }
+        public RamenBowl GetRamen()
+        {
+            return this.ramen;
+        }
+    }
+
+    /// <summary>
+    /// Concrete builder for Tonkotsu Ramen
+    /// </summary>
+    public class TonkotsuRamenBuilder : IRamenBuilder
+    {
+        private RamenBowl ramen;
+        public TonkotsuRamenBuilder()
+        {
+            this.ramen = new RamenBowl("Tonkotsu Ramen");
+        }
+        public void SetBroth(string broth)
+        {
+            this.ramen.Broth = broth;
+        }
+        public void SetNoodles(string noodles)
+        {
+            this.ramen.Noodles = noodles;
+        }
+        public void AddToppings(string[] toppings)
+        {
+            this.ramen.Toppings.AddRange(toppings);
+        }
+        public void AddExtras(string[] extras)
+        {
+            this.ramen.Extras.AddRange(extras);
+        }
+        public RamenBowl GetRamen()
+        {
+            return this.ramen;
+        }
+    }
+
+    /// <summary>
+    /// Concrete builder for Miso Ramen
+    /// </summary>
+    public class MisoRamenBuilder : IRamenBuilder
+    {
+        private RamenBowl ramen;
+        public MisoRamenBuilder()
+        {
+            this.ramen = new RamenBowl("Miso Ramen");
+        }
+        public void SetBroth(string broth)
+        {
+            this.ramen.Broth = broth;
+        }
+        public void SetNoodles(string noodles)
+        {
+            this.ramen.Noodles = noodles;
+        }
+        public void AddToppings(string[] toppings)
+        {
+            this.ramen.Toppings.AddRange(toppings);
+        }
+        public void AddExtras(string[] extras)
+        {
+            this.ramen.Extras.AddRange(extras);
+        }
+        public RamenBowl GetRamen()
+        {
+            return this.ramen;
+        }
+    }
+}
