@@ -1,4 +1,4 @@
-namespace DesignPatterns
+namespace Assignment2
 {
     // TODO#1: Convert to use Singleton pattern
     public class Printer
